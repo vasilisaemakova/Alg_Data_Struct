@@ -1,5 +1,6 @@
 # Alg_Data_Struct
 
+Лаб_1
 1) Сложность https://github.com/vasilisaemakova/Alg_Data_Struct/blob/main/lb_1/src/DinArr.h#L191
 O(n^2), потому что проходится по 2м вложеннам циклам (for)
 
