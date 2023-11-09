@@ -39,11 +39,9 @@ public class Main {
 
 
 
-
         System.out.println("TimSort\t\t\t" + dataForGraph.get(0).toString());
         System.out.println("MergeSort\t\t" + dataForGraph.get(1).toString());
         System.out.println("InsertSort\t\t" + dataForGraph.get(2).toString());
-
 
     }
 }

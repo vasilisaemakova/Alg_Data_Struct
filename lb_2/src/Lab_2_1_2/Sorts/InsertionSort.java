@@ -1,7 +1,8 @@
 package Lab_2_1_2.Sorts;
+
 import Collections.MyList;
 
-public class InsertionSort <T extends Comparable<T>> implements Sort<T> {
+public class InsertionSort<T extends Comparable<T>> implements Sort<T> {
 
     private final MyList<T> arr;
 
@@ -40,4 +41,3 @@ public class InsertionSort <T extends Comparable<T>> implements Sort<T> {
     }*/
 
 }
-/* This code is contributed by Rajat Mishra. */

@@ -3,9 +3,6 @@ package Collections;
 public interface MyList<T> {
 
 
-
-
-
     int getSize();
 
     boolean isEmpty();

@@ -3,32 +3,33 @@ package Lab_2_1_2.Sorts;
 import Collections.MyArrayList;
 import Collections.MyList;
 
-public class MergeSort <T extends Comparable<T>> implements Sort<T>{
+public class MergeSort<T extends Comparable<T>> implements Sort<T> {
 
     private final MyList<T> arr;
-    public MergeSort (MyList<T> arr ){
+
+    public MergeSort(MyList<T> arr) {
         this.arr = arr;
     }
-    void merge(int left, int mid, int right)
-    {
-        // Find sizes of two subarrays to be merged
+
+    void merge(int left, int mid, int right) {
+        //find sizes of two subarrays to be merged
         int lenLiftList = mid - left + 1;
         int lenRightList = right - mid;
 
 
-        /* Create temp arrays */
+        //create temp arrays
         MyList<T> leftList = new MyArrayList<>(lenLiftList);
         MyList<T> rightList = new MyArrayList<>(lenRightList);
 
-        /*Copy data to temp arrays*/
+        //copy data to temp arrays
         for (int i = 0; i < lenLiftList; ++i)
-            leftList.set(i, arr.get(left+i));
+            leftList.set(i, arr.get(left + i));
         for (int i = 0; i < lenRightList; ++i)
             rightList.set(i, arr.get(mid + 1 + i));
 
-        /* Merge the temp arrays */
+        //merge the temp arrays
 
-        // Initial indexes of left, right subarrays and array
+        //initial indexes of left, right subarrays and array
         int leftPoint = 0, rightPoint = 0, arrPoint = left;
 
 
@@ -37,22 +38,21 @@ public class MergeSort <T extends Comparable<T>> implements Sort<T>{
             if (leftList.get(leftPoint).compareTo(rightList.get(rightPoint)) <= 0) {
                 arr.set(arrPoint, leftList.get(leftPoint));
                 leftPoint++;
-            }
-            else {
+            } else {
                 arr.set(arrPoint, rightList.get(rightPoint));
                 rightPoint++;
             }
             arrPoint++;
         }
 
-        // copy to arr
+        //copy to arr
         while (leftPoint < lenLiftList) {
             arr.set(arrPoint, leftList.get(leftPoint));
             leftPoint++;
             arrPoint++;
         }
 
-        /* Copy remaining elements of R[] if any */
+        //copy remaining elements of R[] if any
         while (rightPoint < lenRightList) {
             arr.set(arrPoint, rightList.get(rightPoint));
             rightPoint++;
@@ -60,14 +60,14 @@ public class MergeSort <T extends Comparable<T>> implements Sort<T>{
         }
     }
 
-    // Main function that sorts arr[l..r] using
+    //main function that sorts arr[l..r] using
     // merge()
 
     public void sort() {
         sortLR(0, arr.getSize() - 1);
     }
-    public void sortLR(int left, int right)
-    {
+
+    public void sortLR(int left, int right) {
         if (left < right) {
             // Find the middle point
             int mid = left + (right - left) / 2;
@@ -96,7 +96,5 @@ public class MergeSort <T extends Comparable<T>> implements Sort<T>{
 
         System.out.println(timeMerge);
     }*/
-
-
 
 }

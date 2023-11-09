@@ -5,24 +5,23 @@ import Collections.MyArrayList;
 import Collections.MyLinkedList;
 import Collections.MyList;
 import Collections.MyStack;
-import Lab_2_1_2.Lab2.utils;
 
 
-public class TimSort <T extends Comparable<T>> implements Sort<T>
-{
+public class TimSort<T extends Comparable<T>> implements Sort<T> {
     private final MyList<T> arr;
 
-    public TimSort (MyList<T> arr ){
+    public TimSort(MyList<T> arr) {
         this.arr = arr;
     }
 
     private static int getMinRun(int n) {
         int r = 0;
-        while (n >= 64)
-        {
+
+        while (n >= 64) {
             r |= n & 1;
             n >>= 1;
         }
+
         return n + r;
     }
 
@@ -30,7 +29,7 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
         int index;
         int size;
 
-        public Run(int index, int size){
+        public Run(int index, int size) {
             this.index = index;
             this.size = size;
         }
@@ -41,8 +40,7 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
         while (end >= beg) {
             if (arr.get(cur).compareTo(arr.get((beg + end) / 2)) > 0) {
                 beg = (beg + end) / 2 + 1;
-            }
-            else {
+            } else {
                 end = (beg + end) / 2 - 1;
             }
         }
@@ -50,21 +48,21 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
     }
 
     private void insertionSort(int left, int right, int curInd) {
-        for (int i = curInd; i <= right; i++){
-            if (arr.get(i).compareTo(arr.get(i-1)) < 0){
-                binInsert(i, left, i-1);
+        for (int i = curInd; i <= right; i++) {
+            if (arr.get(i).compareTo(arr.get(i - 1)) < 0) {
+                binInsert(i, left, i - 1);
             }
         }
     }
 
-    private int doGallop(MyList <T> galopList, int point, T constDataPoint) {
+    private int doGallop(MyList<T> galopList, int point, T constDataPoint) {
         int gallop = 1;
         int size = galopList.getSize();
+
         while (true) {
             if ((point < size) && (galopList.get(point).compareTo(constDataPoint) <= 0)) {
                 point += gallop;
-            }
-            else {
+            } else {
                 point -= (gallop / 2);
                 point++;
                 gallop = 1;
@@ -79,8 +77,13 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
         //copy left, right subarr
         MyList<T> leftList = new MyArrayList<>();
         MyList<T> rightList = new MyArrayList<>();
-        for (int i = left.index; i < left.index + left.size; i++) leftList.add(arr.get(i));
-        for (int i = right.index; i < right.index + right.size; i++) rightList.add(arr.get(i));
+
+        for (int i = left.index; i < left.index + left.size; i++) {
+            leftList.add(arr.get(i));
+        }
+        for (int i = right.index; i < right.index + right.size; i++) {
+            rightList.add(arr.get(i));
+        }
 
         int leftPoint = 0, rightPoint = 0;
         int pastPoint = 0; //need for copy elem. from left or right subarr to arr after galop
@@ -90,48 +93,57 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
             if (leftList.get(leftPoint).compareTo(rightList.get(rightPoint)) <= 0) {
                 pastPoint = leftPoint;
                 leftPoint = doGallop(leftList, leftPoint, rightList.get(rightPoint));
+
                 for (int i = pastPoint; i < leftPoint; i++, curInd++) {
                     arr.set(curInd, leftList.get(i));
                 }
-            }
-            else {
+            } else {
                 pastPoint = rightPoint;
                 rightPoint = doGallop(rightList, rightPoint, leftList.get(leftPoint));
-                for (int i = pastPoint; i < rightPoint; i++, curInd++) arr.set(curInd, rightList.get(i));
+
+                for (int i = pastPoint; i < rightPoint; i++, curInd++) {
+                    arr.set(curInd, rightList.get(i));
+                }
             }
         }
-        for (int i = leftPoint; i < left.size; i++, curInd++){
+
+        for (int i = leftPoint; i < left.size; i++, curInd++) {
             arr.set(curInd, leftList.get(i));
         }
+
         for (int i = rightPoint; i < right.size; i++, curInd++) {
             arr.set(curInd, rightList.get(i));
         }
+
         right.index = left.index;
         right.size += left.size;
 
         //mylist.view();
     }
 
-    private void reverse(int left, int right){
-        int sizeArrReverse = right- left + 1;
+    private void reverse(int left, int right) {
+        int sizeArrReverse = right - left + 1;
         MyList<T> arrReverse = new MyArrayList<>(sizeArrReverse);
         //boolean div2 = true;
         T temp;
         int limit = sizeArrReverse / 2;
-        for (int i = 0; i < limit; i++){
+
+        for (int i = 0; i < limit; i++) {
             temp = arr.get(left + i);
-            arr.set(left+i, arr.get(right-i));
-            arr.set(right-i, temp);
+            arr.set(left + i, arr.get(right - i));
+            arr.set(right - i, temp);
         }
     }
 
-    private int tryFindRun(int curInd){
+    private int tryFindRun(int curInd) {
         int temp = curInd;
-        while ((curInd+1 < arr.getSize()) && (arr.get(curInd+1).compareTo(arr.get(curInd)) > 0)){
+
+        while ((curInd + 1 < arr.getSize()) && (arr.get(curInd + 1).compareTo(arr.get(curInd)) > 0)) {
             curInd++;
         }
-        if (curInd == temp){
-            while ((curInd+1 < arr.getSize()) && (arr.get(curInd+1).compareTo(arr.get(curInd)) < 0)){
+
+        if (curInd == temp) {
+            while ((curInd + 1 < arr.getSize()) && (arr.get(curInd + 1).compareTo(arr.get(curInd)) < 0)) {
                 curInd++;
             }
             reverse(temp, curInd);
@@ -149,8 +161,8 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
 
 
             if (stack.getSize() > 0) {
-
                 Run Z = stack.pop();
+
                 if (Z.size <= Y.size + X.size) {
                     if (Z.size < X.size) {
                         merge(Z, Y);
@@ -182,7 +194,7 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
         }
     }
 
-    private void mergeAll(MyStack<Run> stack){
+    private void mergeAll(MyStack<Run> stack) {
 
         while (stack.getSize() > 1) {
             Run X = stack.pop();
@@ -190,18 +202,17 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
 
             if (stack.getSize() > 0) {
                 Run Z = stack.pop();
+
                 if (Z.size < X.size) {
                     merge(Z, Y);
                     stack.push(Y);
                     stack.push(X);
-                }
-                else {
+                } else {
                     merge(Y, X);
                     stack.push(Z);
                     stack.push(X);
                 }
-            }
-            else {
+            } else {
                 merge(Y, X);
             }
         }
@@ -215,13 +226,13 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
 
 
         int curInd = 0, begRun = 0, endRun = 0;
-        while (curInd < size){
+        while (curInd < size) {
             //get sorted run
             begRun = curInd;
             curInd = tryFindRun(curInd);
-            if (curInd - begRun + 1 < minRun){
+            if (curInd - begRun + 1 < minRun) {
                 endRun = Math.min((begRun + minRun - 1), (size - 1));
-                insertionSort(begRun, endRun, curInd+1);
+                insertionSort(begRun, endRun, curInd + 1);
                 curInd = endRun;
             }
 
@@ -230,9 +241,6 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
             mergeTop(stackRun);
         }
         mergeAll(stackRun);
-
-
-
     }
 
 
@@ -249,5 +257,3 @@ public class TimSort <T extends Comparable<T>> implements Sort<T>
     }*/
 }
 
-
-// This code has been contributed by 29AjayKumar
